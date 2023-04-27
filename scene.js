@@ -233,7 +233,7 @@ let xPos;
 
 function synthPlay(x,y){
 const pitch=["C","D","E","F","G","A","B"]
-const octv=["3","4","5","6"];
+const octv=["3","4","5"];
 
 
   if(x>0.875){
@@ -261,16 +261,14 @@ else if(x<=0.125){
     playThisPitch=pitch[7]
 }
 
-if(y>0.750){
+if(y>0.666){
   playThisOct=octv[0]
 }
-else if(y>0.5&& y<=0.750){
+else if(y>0.444&& y<=0.666){
   playThisOct=octv[1]
 }
-else if(y>0.250&& y<=0.50){
+else if(y<0.444){
   playThisOct=octv[2]
-}else if(y<0.25){
-  playThisOct=octv[3]
 }
 
 playThis= playThisPitch + playThisOct;
@@ -292,8 +290,8 @@ playThis= playThisPitch + playThisOct;
 
   // Rotate the cube mesh
   demo.move(0.1);
-  xPos=  handData.landmarks[0].x;
-  yPos= handData.landmarks[0].y;
+  xPos=  handData.landmarks[8].x;
+  yPos= handData.landmarks[8].y;
   synthPlay(xPos,yPos);
   synth.triggerAttackRelease(playThis, "4n");
   console.log(xPos)
