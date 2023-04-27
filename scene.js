@@ -215,9 +215,72 @@ demo.initXY(3, 2, scene);
 
  handCubes.createCubes(geometry, material);
  handCubes.addCubesToScene(scene);
+ let attack=0.1;
+ let synth = new Tone.MonoSynth({
+  oscillator: {
+    type: "sine"
+  },
+  envelope: {
+    attack: 2*attack
+  }
+}).toDestination();
+let playThisPitch;
+let playThisOct;
+let playThis;
 
+let yPos;
+let xPos;
+
+function synthPlay(x,y){
+const pitch=["C","D","E","F","G","A","B"]
+const octv=["3","4","5","6"];
+
+
+  if(x>0.875){
+    playThisPitch=pitch[0]
+}
+else if(x>0.750&& x<=0.875){
+    playThisPitch=pitch[1]
+}
+else if(x>0.625&& x<=0.750){
+    playThisPitch=pitch[2]
+}
+else if(x>0.5&& x<=0.625){
+    playThisPitch=pitch[3]
+}
+else if(x>0.375&& x<=0.5){
+    playThisPitch=pitch[4]
+}
+else if(x>0.250&& x<=0.375){
+    playThisPitch=pitch[5]
+}
+else if(x>0.125&& x<=0.250){
+    playThisPitch=pitch[6]
+}
+else if(x<=0.125){
+    playThisPitch=pitch[7]
+}
+
+if(y>0.750){
+  playThisOct=octv[0]
+}
+else if(y>0.5&& y<=0.750){
+  playThisOct=octv[1]
+}
+else if(y>0.250&& y<=0.50){
+  playThisOct=octv[2]
+}else if(y<0.25){
+  playThisOct=octv[3]
+}
+
+playThis= playThisPitch + playThisOct;
+
+
+
+}
 
 (function animate() {
+
   stats.begin();
   stats.end();
   // console.log(handData.landmarks[0])
@@ -229,28 +292,23 @@ demo.initXY(3, 2, scene);
 
   // Rotate the cube mesh
   demo.move(0.1);
-
-  let attacks;
-  const container  = {};
-   container.instance = new Tone.MonoSynth({
-   oscillator: {
-     type: "sine"
-   },
-   envelope: {
-     attack: 10*handData.landmarks[0].x
-   }
- }).toDestination();
+  xPos=  handData.landmarks[0].x;
+  yPos= handData.landmarks[0].y;
+  synthPlay(xPos,yPos);
+  synth.triggerAttackRelease(playThis, "4n");
+  console.log(xPos)
 
   
 
-  container.instance.triggerAttackRelease("C4", "4n");
+  
+
+
 
 
 
   test.rotation.x += 0.01;
   test.rotation.y += 0.01;
-  // console.log(container.instance.envelope.attack)
-  delete container.instance;
+  // console.log(scene.children)
 })()
 
 

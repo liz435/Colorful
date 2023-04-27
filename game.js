@@ -88,7 +88,7 @@ export class Conductor{
 
             // console.log(Pos)
             //let pitch = Av += str;
-            const picth = ["D3", "G3", "C4","G4","B3","D4","F3","A3"];
+            const picth = ["D4", "G4", "C4","G4","B4","D4","F4","A4"];
             let playThis;
 
             if(Pos>3){
