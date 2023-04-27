@@ -5,6 +5,8 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import{Conductor} from "./game";
 import Stats from "stats.js";
 import * as Tone from 'tone';
+import{GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import{DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader";
 
 
 
@@ -207,6 +209,38 @@ test.position.x += 2;
 scene.add(test);
 scene.add(test2);
 
+///////////////////load metaballs///////////////////////
+
+
+
+
+// create a new instance of the GLTFLoader
+const loader = new GLTFLoader();
+
+
+// load a GLTF file
+loader.load(
+  // path to the GLTF file
+  '/MetaBalls.glb',
+
+  // callback function that will be called when the file is loaded
+  function (gltf) {
+    // add the loaded object to the scene
+    scene.add(gltf.scene);
+  },
+
+  // callback function that will be called while the file is loading
+  function (xhr) {
+    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+  },
+
+  // callback function that will be called if there is an error loading the file
+  function (error) {
+    console.error('Error loading GLTF file:', error);
+  }
+);
+
+
 
 
 const demo = new Conductor();
@@ -216,7 +250,7 @@ demo.initXY(3, 2, scene);
  handCubes.createCubes(geometry, material);
  handCubes.addCubesToScene(scene);
  let attack=0.1;
- let synth = new Tone.MonoSynth({
+ let synth = new Tone.MembraneSynth({
   oscillator: {
     type: "sine"
   },
@@ -291,18 +325,13 @@ playThis= playThisPitch + playThisOct;
   // Rotate the cube mesh
   demo.move(0.1);
   xPos=  handData.landmarks[8].x;
-  yPos= handData.landmarks[8].y;
-  synthPlay(xPos,yPos);
+    yPos= handData.landmarks[8].y;
+
+   
+    synthPlay(xPos,yPos);
+
+
   synth.triggerAttackRelease(playThis, "4n");
-  console.log(xPos)
-
-  
-
-  
-
-
-
-
 
   test.rotation.x += 0.01;
   test.rotation.y += 0.01;

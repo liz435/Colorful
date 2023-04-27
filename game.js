@@ -1,4 +1,5 @@
-// import{GLTFLoader} from "./three/examples/jsm/loaders"
+import{GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader"
+import{DRACOLoader} from "three/examples/jsm/loaders/DRACOLoader"
 import * as THREE from "three";
 import * as Tone from 'tone';
 export class Conductor{
@@ -88,7 +89,7 @@ export class Conductor{
 
             // console.log(Pos)
             //let pitch = Av += str;
-            const picth = ["D4", "G4", "C4","G4","B4","D4","F4","A4"];
+            const picth = ["D4", "D4", "A3","F3","Bb4","Bb3","F4","A4"];
             let playThis;
 
             if(Pos>3){
@@ -152,14 +153,15 @@ export class loadScene{
 
 // Optional: Provide a DRACOLoader instance to decode compressed mesh data
         const dracoLoader = new DRACOLoader();
-        dracoLoader.setDecoderPath( '/examples/jsm/libs/draco/' );
+        dracoLoader.setDecoderPath( 'three/examples/jsm/loaders/DRACOLoader' );
         loader.setDRACOLoader( dracoLoader );
     }
     
-    loadThisScene(){
-    loader.load(
+    loadThisScene(scene){
+        
+    this.loader.load(
         // resource URL
-        'models/gltf/duck/duck.gltf',
+        'MetaBalls.glb',
         // called when the resource is loaded
         function ( gltf ) {
     
@@ -170,7 +172,7 @@ export class loadScene{
             gltf.scenes; // Array<THREE.Group>
             gltf.cameras; // Array<THREE.Camera>
             gltf.asset; // Object
-    
+            scene.add(gltf);
         },
         // called while loading is progressing
         function ( xhr ) {
