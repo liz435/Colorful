@@ -1,0 +1,25 @@
+{
+  "name": "web-handtracking",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "devDependencies": {
+    "vite": "^4.2.0"
+  },
+  "dependencies": {
+    "@mediapipe/drawing_utils": "^0.3.1675466124",
+    "@mediapipe/hands": "^0.4.1675469240",
+    "@mediapipe/tasks-vision": "0.1.0-alpha-7",
+    "@serialport/parser-readline": "^10.5.0",
+    "aframe": "^1.4.2",
+    "ammo.js": "^0.0.10",
+    "serialport": "^10.5.0",
+    "three": "^0.151.3"
+  }
+}
