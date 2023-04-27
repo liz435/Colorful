@@ -3,6 +3,9 @@ import handData from "./hand.model";
 import handCubes from "./hand.view";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import{Conductor} from "./game";
+import Stats from "stats.js";
+import * as Tone from 'tone';
+
 
 
 let camera, scene, renderer, controls;
@@ -173,7 +176,23 @@ function manageRaycasters() {
 const axesHelper = new THREE.AxesHelper(5);
 scene.add(axesHelper);
 
-camera.position.z = 8;
+const size = 8;
+const divisions = 8;
+const colorLinesCenter = 0xffffff;
+const colorLinesGrid = new THREE.Color("lime");
+const helper = new THREE.GridHelper(
+  size,
+  divisions,
+  colorLinesCenter,
+  colorLinesGrid
+);
+scene.add(helper);
+
+var stats = new Stats();
+stats.showPanel(0); // 0: fps, 1: ms, 2: mb, 3+: custom
+document.body.appendChild(stats.dom);
+
+camera.position.z = 5;
 
 // Create a cube mesh
 const test = new THREE.Mesh(geometry, material);
@@ -191,7 +210,7 @@ scene.add(test2);
 
 
 const demo = new Conductor();
-demo.initXY(2, 2, scene);
+demo.initXY(3, 2, scene);
 
 
  handCubes.createCubes(geometry, material);
@@ -199,6 +218,9 @@ demo.initXY(2, 2, scene);
 
 
 (function animate() {
+  stats.begin();
+  stats.end();
+  // console.log(handData.landmarks[0])
 //  manageHand();
  handCubes.render(camera)
 //  manageRaycasters();
@@ -207,9 +229,28 @@ demo.initXY(2, 2, scene);
 
   // Rotate the cube mesh
   demo.move(0.1);
+
+  let attacks;
+  const container  = {};
+   container.instance = new Tone.MonoSynth({
+   oscillator: {
+     type: "sine"
+   },
+   envelope: {
+     attack: 10*handData.landmarks[0].x
+   }
+ }).toDestination();
+
+  
+
+  container.instance.triggerAttackRelease("C4", "4n");
+
+
+
   test.rotation.x += 0.01;
   test.rotation.y += 0.01;
-  // console.log(scene.children)
+  // console.log(container.instance.envelope.attack)
+  delete container.instance;
 })()
 
 

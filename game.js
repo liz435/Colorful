@@ -1,5 +1,6 @@
 // import{GLTFLoader} from "./three/examples/jsm/loaders"
 import * as THREE from "three";
+import * as Tone from 'tone';
 export class Conductor{
 
     constructor(row, column) {
@@ -16,8 +17,8 @@ export class Conductor{
       initXY(rowNum, colNum,scene) {
 
         for (let i = 0; i < colNum * rowNum; i++) {
-          const x = Math.random() * 6 - 3;
-          const y = Math.random() * 6 - 3;
+          const x = Math.random() * 4 - 2;
+          const y = Math.random() * 4 - 2;
           const z = Math.random() * 3 - 6;
           this.row.push(x);
           this.column.push(y);
@@ -48,12 +49,13 @@ export class Conductor{
     
           this.boxes.push(box);
           scene.add(this.boxes[i]);
+        //   this.color();
         }
         // console.log(this.boxes);
       }
       color(){
         for(let i=0; i<this.boxes.length; i++){
-            box.color.set(Math.random()* 0xffffff);
+            this.geometryGame.set(Math.random()* 0xffffff);
         }
       }
       
@@ -75,9 +77,50 @@ export class Conductor{
       move(speed) {
         for (let i = 0; i < this.boxes.length; i++) {
           if (this.boxes[i].position.z >= 2) {
-            this.boxes[i].position.z = Math.random() * 3 - 6;
-            this.boxes[i].position.x = Math.random() * 6 - 3;
-            this.boxes[i].position.y = Math.random() * 6 - 3;
+            this.boxes[i].position.z = Math.random()* 40-60;
+            this.boxes[i].position.x = Math.random() * 4 - 2;
+            this.boxes[i].position.y = Math.random() * 4 - 2;
+            const synth = new Tone.Synth().toDestination();
+            let Av = "C";
+            let xPos = this.boxes[i].position.x;
+            let yPos = this.boxes[i].position.y;
+            let Pos = xPos + yPos;
+
+            // console.log(Pos)
+            //let pitch = Av += str;
+            const picth = ["D3", "G3", "C4","G4","B3","D4","F3","A3"];
+            let playThis;
+
+            if(Pos>3){
+                playThis=picth[0]
+            }
+            else if(Pos>2&& Pos<=3){
+                playThis=picth[1]
+            }
+            else if(Pos>1&& Pos<=2){
+                playThis=picth[2]
+            }
+            else if(Pos>0&& Pos<=1){
+                playThis=picth[3]
+            }
+            else if(Pos>-1&& Pos<=0){
+                playThis=picth[4]
+            }
+            else if(Pos>-2&& Pos<=-1){
+                playThis=picth[5]
+            }
+            else if(Pos>-3&& Pos<=-2){
+                playThis=picth[6]
+            }
+            else if(Pos<=-3){
+                playThis=picth[7]
+        }
+
+
+            
+//play a middle 'C' for the duration of an 8th note
+        synth.triggerAttackRelease(playThis, "8n");
+
           }
           this.boxes[i].position.z += speed;
         }
